@@ -1,0 +1,11 @@
+const { data } = await axios.get(`${url}/user/allOrders`);
+    console.log(data);
+    setstate(
+      data.fulldata.filter(
+        (thing, index, self) =>
+          index ===
+          self.findIndex(
+            (t) => t.title === thing.title && t.price === thing.price
+          )
+      )
+    );

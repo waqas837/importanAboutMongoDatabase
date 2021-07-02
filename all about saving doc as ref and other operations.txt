@@ -1,0 +1,94 @@
+///////////////example made in product management like the add/remove to cart etc..////////////////////
+
+//1.full add to cart functionality using mongoose,, schema is below
+
+const addToCartForCurrentUser = async (req, res) => {
+  const { itemId, userId } = req.params;
+  try {
+    //first we have to check that this user is exists
+    const userExists = await custmOrders.findOne({ user: userId });
+    //if user already exists then donot create it but we have to only update it
+    if (userExists) {
+      //let check if user's already have this item
+    const findDuplicateProduct = await custmOrders.findOne({user: userId ,"cartItems.products":itemId})
+      if(findDuplicateProduct){
+      //  console.log("you already have this product");
+      }else
+      //else we will add a new item 
+      await custmOrders.findOneAndUpdate({user:userId},{$addToSet:{cartItems:{products:itemId}}})
+      // console.log("this user exists but we added a new item");
+      //if user not exist then create it
+    } 
+     if (!userExists) {
+       //for create a new doc. we have a formate but when we update then we use addtoset to an array
+      const isExists = new custmOrders({user: userId,cartItems:[{products:itemId}]});
+      await isExists.save();
+    }
+
+  } catch (error) {
+    console.log(`error during getting the data ${error}`);
+  }
+};
+
+2./////////////////////////////////////////////update quantity////
+const cartqtyUpdate = async (req, res) => {
+  const { userId,itemId } = req.params;
+ 
+  try {
+    const newData = await custmOrders.findOneAndUpdate(
+      { user: userId, "cartItems.products": itemId },
+      { $set: { "cartItems.$.qty": req.body.qty } }
+    );
+    res.json({ data: newData });
+  } catch (error) {
+    console.log(`error during the update cart qty ${error}`);
+  }
+};
+
+
+3./////////////////schema ////////////
+
+const orders = new mongoose.Schema({
+  //user object means it will create a new doc. every time
+  user: {
+    type: String,
+    required: true,
+    ref: "usersignup",
+  },
+  //here it will not create a new doc instead it will store the new values due to array
+  cartItems:[{
+    products:{type:mongoose.Schema.Types.ObjectId,ref:"productData"},
+    qty:{type:String,default:0}
+  }]
+});
+
+4.//////////////finding a doc by id only a field inside a nested doc with exmaple
+//first we have to find only the related qty
+const findSingleCartProduct = async (req, res) => {
+  const {userId,itemId } = req.params;
+  try {
+    //first we find out the whole doc by which user is login
+ const data =
+ await custmOrders.findOne({user:userId},{cartItems:{$elemMatch:{products:itemId}}})
+    res.json({data});
+  } catch (error) {
+    console.log(`error during find a one user's product data ${error}`);
+  }
+};
+
+5.//////////////////////////remove an element from nested as similar for nested docs////
+//remove addto cart single item
+const cartSingleRemove = async (req, res) => {
+  const { userId,itemId } = req.params;
+  try {
+    const removeAsingleProduct = await custmOrders.findOneAndUpdate(
+      { user:userId },
+      {
+        $pull: { cartItems: { products:itemId } },
+      }
+    );
+    res.json({ success: true });
+  } catch (error) {
+    console.log(error);
+  }
+};

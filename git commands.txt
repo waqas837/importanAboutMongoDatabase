@@ -1,0 +1,20 @@
+ 1.git init
+this will convert your working directry into a github directory/repositry and we will found a .git file inside our working  folder/directory/repositry
+
+ 2.git add .             
+this will add all the new files or changes in our working direcry but it will not actually all the changes untill we make a commit
+
+ 3.git commit -m "any message for new addition/update/any change"            
+this will really do all changes that we've done
+
+ 4.git status ==> optional:  it will tell us the status of changed/update files in repositry..
+
+ 5.git remote add origin <copylink here>
+this will link our local repositry to the remote repositry of github
+
+ 6.git push origin main/master        
+this will know your credentials so put them and our code is pushed to 
+remote github repositry
+
+note:now if we make any changes we can again repeat all steps from 
+>> 2.git add . << to onwards.........that's it.

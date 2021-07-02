@@ -1,0 +1,113 @@
+//1. population in mongoose: works like join
+const tenderPostData = async (req, res) => {   
+  // console.log(req.body)
+  //note : using the references we use the different models
+   try {
+       //we first have the two models so what we have to do save them with a one requested route 
+    const main =  new PosttenderModel({email:req.body.email})
+    await main.save()
+    const tender  = new TenderModel({title:req.body.title,description:req.body.description});
+    await tender.save()
+     main.tenderDetail.push(tender)
+    await main.save()
+     const data = await PosttenderModel.find({email:"example@gmail.com"}).populate("tenderDetail")
+    res.json({data})
+  } catch (error) {
+    console.log(`error during tender post the data ${error}`);
+
+  }
+}
+
+/////////////////////////////mongodb important concepts//////////////////////////////////////
+ 
+  //find(filter,data)
+  //aggregate($match) is same as find(filter)
+  //$elemMatch grips direct to the array of this document
+  //so we can group any field as new field and we can just finding only one expression as distinct/unique values
+  //aggregate has different stages these stages are like the pipelines next to next and we can make some new groups and 
+  //amazing things +project stage will include or exlude the fields like filters
+
+
+3. //making check on the embedded data: we can make the checks on the find-based data
+  //common issue: if it does not find any element it may give error next when we use the
+ //variable which is not availble after finding so we can use the length of any array/object
+
+
+const findData = await PosttenderModel.find({"tenderDetail.title":req.body.title})
+    console.log(findData.length)
+    if(findData.length===0)
+     {
+       console.log("ability to store the data")
+     }
+     if(findData.length!==0)
+     {
+       console.log("You have already own this item")
+     }
+
+
+
+
+
+4.///adding+updating only unique data for the one email in embbedded docs
+
+ try {
+     const findData = await PosttenderModel.find({email:req.body.email})
+     //if user does not exists
+    if(findData.length===0){
+      const data = new PosttenderModel({email:req.body.email,tenderDetail:{
+      title:req.body.title,description:req.body.description}})
+      await data.save()
+      res.json(data)
+    }
+    //if user exists
+    if(findData.length!==0){
+      const data = await PosttenderModel.findOneAndUpdate({email:req.body.email,
+     "tenderDetail.title":{$ne:req.body.title}},
+      {$addToSet:{tenderDetail:{
+        title:req.body.title,description:req.body.description}}})
+         if(data===null){
+          res.json({message:"You have already this item"})
+        }else{
+          res.json({data})
+        }
+    }
+
+   }
+
+
+5.//delete an embedded document 
+//delete an item for a specific user 
+ const deleteTender = async (req, res) => {  
+    try {
+ const data = 
+ await PosttenderModel.findOneAndUpdate({email:req.body.email},{$pull:{tenderDetail:{_id:req.params._id}}})
+ res.json({data})
+
+} catch (error) {
+console.log(`error during getting tender's posted data ${error}`);
+res.json(error)
+
+}
+}
+
+
+
+//6.udpate only single field inside the nested docs finding by email
+
+ await cartadd.updateMany({email:email,"products._id":id},
+    { $set:{"products.$.qty":req.body.qty}});
+     res.json({ data: newData })
+
+///7.find only the some specific sub docs 
+//amazing things +project stage will include or exlude the fields like filters
+
+  await PosttenderModel.find({"tenderDetail.bidderemail":user,"tenderDetail.accepted":true},
+  {tenderDetail:{$elemMatch:{bidderemail:user}}}
+  ).select("email")
+//find(filter,data).select('field')  
+//explanantion:
+//find(filter:search only this data,,,,data:return these fields).select("give me only field data")//note:"select is a full field also included the its embedded docs but how we are getting
+//results because of the filter and getting results for it firslty;
+/////////////////////////////some important//////////////////////////////////////////
+get image from the backend
+src={`http://localhost:1000/${state.logo}`} 

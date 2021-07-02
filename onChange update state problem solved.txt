@@ -1,0 +1,4 @@
+//update like this
+await singleJobModel.findByIdAndUpdate(_id,data);
+routes:patch
+//as a same take a new state onChange and defaultValue as a same as old

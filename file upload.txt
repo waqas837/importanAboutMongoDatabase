@@ -1,0 +1,10 @@
+			<input               
+                            accept='image/*'
+                              id='img'
+                              multiple
+                              type='file'
+                              onChange={(e) => onhandleImage(e)}
+                              className={classes.input}
+                           />
+
+

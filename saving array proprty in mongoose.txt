@@ -1,0 +1,3 @@
+only one field we can update and it will keep only update/push the values,which may not be a case in many sitations
+
+// await storyModel.updateOne({ $push: { authorId: id } });
