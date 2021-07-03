@@ -1,0 +1,57 @@
+1.//main reducer function
+import { addtocart, removeItem, lengthTell,findMyData } from "../Constants";
+// note every case will make only the changes the main global state....that's it
+const ProductReducer = (state = [], action) => {
+  switch (action.type) {
+    case addtocart:
+      const data = [
+        ...state,
+        {
+          userId: action.userId,
+          itemId: action.id,
+          title: action.title,
+          price: action.price,
+          image: action.selectedFile,
+          qty:0
+        },
+      ];
+
+      //check if the action id exists in the addedItems
+      const uniqueObjectArr = [];
+      const uniqueObjectSet = new Set();
+      //set method returns us unique values for an array / or array of an object
+      for (const any of data) {
+        const jsonObject = JSON.stringify(any);
+        if (!uniqueObjectSet.has(jsonObject)) {
+          uniqueObjectArr.push(any);
+        }
+        uniqueObjectSet.add(jsonObject);
+      }
+      var newdata = [...uniqueObjectArr]
+      //because localStorage will save the only strings data
+      localStorage.setItem("products",JSON.stringify(newdata))
+      return [...uniqueObjectArr];
+    // check exists data
+
+    case removeItem:
+      let removeItems =JSON.parse(localStorage.getItem("products"));
+      removeItems = removeItems.filter((item) => item.itemId !== action.id);
+       localStorage.setItem("products", JSON.stringify(removeItems));
+       return state;
+       
+    case lengthTell:
+      if (action.length === undefined) {
+        return 0;
+      }
+      return action.length;
+      case findMyData:
+        // console.log(state.filter((val) => val.userId === action.id))
+        let items =JSON.parse(localStorage.getItem("products"));
+        // items = items.filter((item) => item.id !== id);
+        if(items)
+        return items.filter((val) => val.userId === action.id);
+    default:
+      return state;
+  }
+};
+export default ProductReducer;
