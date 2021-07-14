@@ -1,0 +1,9 @@
+const findUser = await approvedModel.aggregate([{ $unwind: "$approved" }]);
+//it will desconstruct the data and it will remove the array
+    const findata = await approvedModel.populate(findUser,{path:"approved.jobid"});
+    const jobid = findata.map((val)=>val.approved.jobid)
+    const refined = jobid.filter((val)=>delete val.candidates)
+    // console.log(refined);
+    if (findUser) {
+      res.json({ success: true, results: refined });
+    }

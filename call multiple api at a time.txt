@@ -1,0 +1,7 @@
+async function fetchApis(){
+
+return Promise.all([
+        axios.post(`${url}/user/saveSlip/${email}`, state).then(resp=>HandleResp),
+        axios.put(`${url}/user/aftersalesemptycart/${email}`).then(resp=>HandleResp),
+      ]);
+}

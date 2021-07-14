@@ -1,0 +1,7 @@
+import {withRouter} from "react-router-dom"
+=>It is HOC, means it will pass a function inside it and it
+will give that function some "props" inside that function's argument and 
+then we can get all information about our current component path and etc.
+=>so withRouter has no effect on our default exportation of our compenent 
+we can simply export it as we do it simple
+=>we can move next / back also on pages

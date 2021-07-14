@@ -55,3 +55,8 @@ const ProductReducer = (state = [], action) => {
   }
 };
 export default ProductReducer;
+
+note:(JSON.stringfy "" => JSON.parse = removes the "")
+//showing localStorage data
+const workData = JSON.parse(localStorage.getItem("addwork"))
+workData.map.....

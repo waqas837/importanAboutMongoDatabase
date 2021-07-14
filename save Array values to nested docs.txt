@@ -1,0 +1,7 @@
+const isExists = await CvModel.findOne({ email });
+    if (isExists) {
+      await CvModel.findOneAndUpdate({ email }, { $push: { cv: req.body } });
+    } if(!isExists) {
+      await CvModel.create({email});
+    }
+    //this logic also works if we are calling same api for one user's saving data

@@ -1,0 +1,38 @@
+
+
+const [anchorEl, setAnchorEl] = React.useState(null);
+
+   const handleClick = (event) => {
+     setAnchorEl(event.currentTarget);
+   };
+ 
+   const handleClose = () => {
+     setAnchorEl(null);
+   };
+
+const pickUpCity =(name)=>{
+   alert(name)
+   handleClose()
+}
+    
+ 
+////// with this functionality
+
+<Button
+                   size="large" 
+                   startIcon={<PersonPinCircle color="secondary"/>}
+                   variant="outlined" aria-controls="simple-menu" aria-haspopup="true"
+                    onClick={handleClick}>
+        Select a city
+      </Button>
+      <Menu
+  keepMounted
+  open={anchorEl}
+  onClose={handleClose}
+>
+{cities.map((val)=><MenuItem
+onClick={()=>pickUpCity(val.name)}>{val.name}</MenuItem>)}
+</Menu>
+
+ 
+   

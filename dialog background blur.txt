@@ -1,0 +1,16 @@
+backDrop: {
+    backdropFilter: "blur(7px)",
+    backgroundColor:'rgba(0,0,30,0.4)'
+  },
+}));
+
+export default function ExampleDialogComponent() {
+  const classes = useStyles();
+  return (
+    <Dialog
+      open={true}
+      BackdropProps={{
+        classes: {
+          root: classes.backDrop,
+        },
+      }}

@@ -19,6 +19,7 @@ const addToCartForCurrentUser = async (req, res) => {
       // console.log("this user exists but we added a new item");
       //if user not exist then create it
     } 
+
      if (!userExists) {
        //for create a new doc. we have a formate but when we update then we use addtoset to an array
       const isExists = new custmOrders({user: userId,cartItems:[{products:itemId}]});
