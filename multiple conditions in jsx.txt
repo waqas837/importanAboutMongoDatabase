@@ -1,0 +1,16 @@
+{/* immeditely invoked function ,wrap inside the brackets multiple conditions we can inside the jsx */}
+    
+
+
+  {
+   (() => {
+       if (user)
+          return (<Typography style={{ fontWeight: "bold" }} variant="h6">
+              Edit User
+            </Typography>)
+       if (posts)
+          return (<Typography style={{ fontWeight: "bold" }} variant="h6">
+              Edit Member
+            </Typography>)
+   })()
+}

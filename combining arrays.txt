@@ -1,0 +1,2 @@
+flatMap() is used for combining different arrays into one array if values are unknow of numbers
+so this is very useful

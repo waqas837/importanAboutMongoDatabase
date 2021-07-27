@@ -1,0 +1,46 @@
+useRef is react hook:
+
+syntax : useRef(initialValue)
+=>it accepts as argument an initial value
+=>and returns a reference??
+=>this refernce is mutalbe (means enable to change it and enable to update it)
+=>reference is an object, which have a 
+=>special property "current" and current 
+=>will contained the refernce for we given
+=>as initialVal,
+we can get refernce by:
+
+//const refernce= useRef(initVal)
+console.log(refernce.current)
+//we can update the current value also
+update: refernce.current = newValue;
+
+2.Main rules:
+
+1.would not cause re-render if it was update
+2.refernce remains persisted(not changes)
+if component re-renders;
+
+=>keyPoint: =>states vs refernces:
+
+=>so states do the same work but states cauese the rendering and states are async but refernces are sync and their values is availbe at first time but it is not availbe in the states.
+
+=>example:
+if you have a button click with a counter value and you store it in a state and if you click the every time state is updated and the component re-renders, but when if we have counter inside a refernce and by current value of refernce object we are updating it then component will not re-renders that's it...
+
+=>sample code:
+
+import { useRef } from 'react';
+
+function LogButtonClicks() {
+  const countRef = useRef(0);
+  
+  const handle = () => {
+    countRef.current++;
+    console.log(`Clicked ${countRef.current} times`);
+  };
+//this message will be shown only first time and next time component will not re-renders if we update the reference
+  console.log('I rendered!');
+
+  return <button onClick={handle}>Click me</button>;
+}

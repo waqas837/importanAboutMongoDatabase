@@ -1,0 +1,5 @@
+//attach it to the window object then access it by the window.variable name
+//store that vaule
+window.var = anyValue
+//get that val
+console.log(windw.var)
