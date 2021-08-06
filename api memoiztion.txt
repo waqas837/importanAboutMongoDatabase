@@ -1,0 +1,61 @@
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import "./styles.css";
+
+const memo = callback => {
+  const cache = new Map();
+  return (...args) => {
+    const selector = JSON.stringify(args);
+    if (cache.has(selector)) return cache.get(selector);
+    const value = callback(...args);
+    cache.set(selector, value);
+    return value;
+  };
+};
+
+const memoizedAxiosGet = memo(axios.get);
+
+const SelectPokemonButton = ({ name, onClick }) => (
+  <button onClick={() => onClick(name)}>{name}</button>
+);
+
+export default function App() {
+  const [pokemon, setPokemon] = useState("");
+  const [pokemonData, setPokemonData] = useState({});
+
+  useEffect(() => {
+    if (pokemon) {
+      memoizedAxiosGet(`https://pokeapi.co/api/v2/pokemon/${pokemon}/`)
+        .then(response => {
+          setPokemonData(response);
+        })
+        .catch(error => {
+          console.error("Error retrieving pokemon with name ", pokemon);
+        });
+    }
+  }, [pokemon]);
+
+  const onClickPokemon = name => {
+    setPokemon(name);
+  };
+
+  return (
+    <div className="App">
+      <h1>Memoization request Demo</h1>
+      <h3>Before clicking the buttons, open the devtools.</h3>
+      <h3>
+        Check that, wih every click on different pokemon, the network request is
+        done
+      </h3>
+      <h3>
+        But, if the pokemon is clicked for second time, the request wont be done
+      </h3>
+      <div />
+      <SelectPokemonButton name="ditto" onClick={onClickPokemon} />
+      <SelectPokemonButton name="pikachu" onClick={onClickPokemon} />
+      <SelectPokemonButton name="charizard" onClick={onClickPokemon} />
+      <div>Pokemon data:</div>
+      <div>{JSON.stringify({ pokemonData })}</div>
+    </div>
+  );
+}

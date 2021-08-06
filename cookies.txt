@@ -1,0 +1,21 @@
+how to send cookies from server to client and then client to server?
+
+follow steps
+=>from express server install a package; npm i cookie-parser and then app.use(cookieparser());
+res.cookie(name,value)
+it will automatic set the cookies on front end
+
+=>from front end side npm i cookies js
+=>read/delete and send cookies
+=>then use cookies.get("name", {path:"/",subdomain:"") && cookies.remove("name")
+
+
+//one more thing to avoid errors
+=>axios.defaults.withCredentials = true (frontend) on everypage
+
+//backend
+cors({
+origin:["http:localhost/any"],
+credentials:true
+}) 
+//by settingout these then with every request cookies will be send automtic to the server...

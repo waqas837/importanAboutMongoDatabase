@@ -1,0 +1,92 @@
+const express = require("express");
+const mysql = require("mysql");
+
+// 1.create connection
+const db = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: "",
+  database: "connectnodemysql",
+});
+
+// 2.connect
+db.connect((err) => {
+  if (err) throw err;
+  console.log("Mysql is connected..");
+});
+const app = express();
+// route for create database
+app.get("/createdatabase", (req, res) => {
+  let sql = "CREATE DATABASE connectnodemysql";
+  db.query(sql, (err, result) => {
+    if (err) throw err;
+    console.log(result);
+    res.send("Database created ..");
+  });
+});
+// route for create table
+app.get("/createposttable", (req, res) => {
+  let sql =
+    "CREATE TABLE posts(id int AUTO_INCREMENT, title VARCHAR(255), body VARCHAR(255), PRIMARY KEY(id))";
+  db.query(sql, (err, result) => {
+    if (err) throw err;
+    console.log(result);
+    res.send("Table created succesfully");
+  });
+});
+// lets add a post
+app.get("/addpost", (req, res) => {
+  let post = { title: "post one", body: "This is my firs post i just like it" };
+  let sql = "INSERT INTO posts SET?";
+  db.query(sql, post, (err, result) => {
+    if (err) throw err;
+    console.log(result);
+    res.send("First post was created succesfully..");
+  });
+});
+//let add post two
+app.get("/addposttwo", (req, res) => {
+  let post = { title: "post two", body: "my second post is here" };
+  let sql = "INSERT INTO posts SET?";
+  db.query(sql, post, (err, result) => {
+    if (err) throw err;
+    console.log(result);
+    res.send("second post was created succesfully..this end point");
+  });
+});
+// fetch all
+app.get("/getallposts", (req, res) => {
+  let sql = "SELECT * FROM posts";
+  db.query(sql, (err, result) => {
+    if (err) throw err;
+    res.send(result);
+  });
+});
+// fetch single post
+app.get("/getposts/:id", (req, res) => {
+  let sql = `SELECT * FROM posts WHERE id=${req.params.id}`;
+  db.query(sql, (err, result) => {
+    if (err) throw err;
+    res.send(result);
+  });
+});
+// update a single post
+app.get("/updatepost/:id", (req, res) => {
+  let title = "updated title";
+  let sql = `UPDATE posts SET title='${title}' WHERE id= ${req.params.id}`;
+  db.query(sql, (err, result) => {
+    if (err) throw err;
+    res.send(result);
+  });
+});
+// delete a single post
+app.get("/deletepost/:id", (req, res) => {
+  let sql = `DELETE FROM posts WHERE id=${req.params.id}`;
+  db.query(sql, (err, result) => {
+    if (err) throw err;
+    res.send(result);
+  });
+});
+app.listen("1000", () => {
+  console.log("App is running on 1000 port");
+});

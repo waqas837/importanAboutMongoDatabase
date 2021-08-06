@@ -1,0 +1,13 @@
+ <Typography
+               className={classes.home}
+            
+            >
+              <ArrowRight /> Home
+            </Typography>
+
+then apply styles;
+
+home:{
+    verticalAlign: "middle",
+    display: "inline-flex",
+}
