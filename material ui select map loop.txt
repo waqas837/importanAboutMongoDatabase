@@ -1,0 +1,12 @@
+<Select
+                          labelId="demo-simple-select-label"
+                          id="demo-simple-select"
+                          value={age}
+                          onChange={handleChange}
+                        >
+                          {showCourses.map((val, index) => (
+                            <MenuItem value={index}>
+                              {val.title}
+                            </MenuItem>
+                          ))}
+                        </Select>
